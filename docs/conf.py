@@ -97,7 +97,10 @@ html_theme = 'bw'
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
+html_theme_options = {
+    "github_ribbon": True,
+    "github_ribbon_link": "https://github.com/andreypopp/jsonpublish",
+    }
 
 # Add any paths that contain custom themes here, relative to this directory.
 html_theme_path = [pkg_resources.resource_filename('bw_sphinxtheme', 'themes')]
