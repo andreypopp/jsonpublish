@@ -1,4 +1,4 @@
-test develop install dist bdist_egg sdist upload:
+test develop install dist bdist_egg sdist upload register:
 	@python setup.py $@
 
 docs::
