@@ -25,6 +25,7 @@ def dumps(obj, skipkeys=False, ensure_ascii=True, check_circular=True,
         namedtuple_as_object=True,
         tuple_as_array=True,
         **kw):
+    """ Serialize `obj` using globally configured JSON encoder"""
     if (not skipkeys and ensure_ascii and
         check_circular and allow_nan
         and indent is None and separators is None and

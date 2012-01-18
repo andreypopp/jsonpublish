@@ -18,6 +18,7 @@ class IJSONSerializeable(Interface):
     """ Marker interface"""
 
 class AdapterRegistry(object):
+    """ Registry of adapters"""
 
     _sentinel = object()
 
@@ -33,6 +34,10 @@ class AdapterRegistry(object):
         return adapter
 
     def register_adapter(self, typ, adapter):
+        """ Register `adapter` for type `typ`
+
+        This operation isn't threadsafe.
+        """
         self.underlying.register(
             [implementedBy(typ)], IJSONSerializeable, "", adapter)
         # XXX: Cache eviction below isn't threadsafe, but at the same time it
@@ -40,6 +45,12 @@ class AdapterRegistry(object):
         self.cache.data.pop(implementedBy(typ), None)
 
 class JSONEncoder(json.JSONEncoder):
+    """ Configurable JSON encoder
+
+    It serializes object by consulting adapter registry. Registry can be
+    modified by accessing `adapters` attribute of encoder which is of type
+    `AdapterRegistry`.
+    """
 
     def __init__(self, *args, **kwargs):
         if "adapters" in kwargs:
@@ -57,6 +68,7 @@ class JSONEncoder(json.JSONEncoder):
         return adapter(o, **settings)
 
 class JSONEncoderSettingsProxy(proxy.ProxyBase):
+    """ Proxy which carries settings for adapters"""
 
     __slots__ = ("__json_settings__",)
 
