@@ -11,11 +11,11 @@ json module from Python's standard library.
 
 When and why you should use jsonpublish:
 
-  * You want all JSON serialization code to be in one place.
+* You want all JSON serialization code to be in one place.
 
-  * You want your serialization code to be flexible and structured.
+* You want your serialization code to be flexible and structured.
 
-  * Sometimes you want to alter serialization for some objects.
+* Sometimes you want to alter serialization for some objects.
 
 Custom types serialization
 --------------------------
