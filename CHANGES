@@ -1,0 +1,12 @@
+Changelog
+=========
+
+0.1.1
+-----
+
+* Fix bug with caching of adapter resolutions.
+
+0.1
+---
+
+* Initial version.

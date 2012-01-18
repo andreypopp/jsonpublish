@@ -36,7 +36,7 @@ class AdapterRegistry(object):
     def register_adapter(self, typ, adapter=None):
         """ Register `adapter` for type `typ`
 
-        This operation isn't threadsafe.
+        If no `adapter` supplied then this method returns decorator.
         """
         if adapter is None:
             def decorator(adapter):
@@ -48,9 +48,7 @@ class AdapterRegistry(object):
     def register_adapter_impl(self, typ, adapter):
         self.underlying.register(
             [implementedBy(typ)], IJSONSerializeable, "", adapter)
-        # XXX: Cache eviction below isn't threadsafe, but at the same time it
-        # isn't supposed to register_adapter call to be threadsafe.
-        self.cache.data.pop(implementedBy(typ), None)
+        self.cache.clear()
 
 
 class JSONEncoder(json.JSONEncoder):
