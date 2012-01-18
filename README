@@ -1,1 +1,3 @@
 Configurable JSON encoder for publishing Python objects as JSON documents.
+
+For basic usage, please see jsonpublish.tests module.
