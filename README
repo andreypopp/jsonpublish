@@ -1,3 +1,47 @@
 Configurable JSON encoder for publishing Python objects as JSON documents.
 
-For basic usage, please see jsonpublish.tests module.
+Basic usage
+-----------
+
+Useful imports:
+
+  >>> from jsonpublish import dumps, register_adapter, jsonsettings
+  >>> from datetime import date
+
+Some objects are not JSON serializable by default:
+
+  >>> o = date(1987, 5, 8)
+  >>> dumps(o)
+  Traceback
+  ...
+  TypeError: datetime.date(1987, 5, 8) is not JSON serializable
+
+Let's define adapter for `date` type:
+
+  >>> def adapt_date(v, long_year=True):
+  ...   if long_year:
+  ...     return v.strftime("%Y-%m-%d")
+  ...   else:
+  ...     return v.strftime("%y-%m-%d")
+  >>> register_adapter(date, adapt_date)
+
+Now we can serializable `date` objects:
+
+  >>> dumps(o)
+  '"1987-05-08"'
+
+We also might want to pass keyword argument to adapter to configure object
+serialization, we can use `jsonsettings` for that:
+
+  >>> oo = jsonsettings(o, long_year=False)
+  >>> dumps(oo)
+  '"87-05-08"'
+
+Note, that `jsonsettings` just makes a proxy for object, so its behaviour is
+completely unchanged after `jsonsettings` call:
+
+  >>> oo == o
+  True
+
+  >>> oo.year
+  1987
