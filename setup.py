@@ -1,11 +1,9 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = "0.1"
-
 setup(
     name="jsonpublish",
-    version="0.1",
+    version="0.1.1",
     description="Publish Python object as JSON documents",
     long_description=open("README").read() + "\n\n" + open("CHANGES").read(),
     author="Andrey Popp",
