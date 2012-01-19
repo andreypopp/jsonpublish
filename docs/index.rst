@@ -20,9 +20,8 @@ When and why you should use jsonpublish:
 Custom types serialization
 --------------------------
 
-Suppose you have some data of your
-application modeled as Python's classes (it may be for example Django models or
-just plain old Python's classes)::
+Suppose you have some data of your application modeled as Python's classes (it
+may be, for example, Django models or just plain old Python's classes)::
 
   class User(object):
 
@@ -30,9 +29,9 @@ just plain old Python's classes)::
       self.username = username
       self.birthday = birthday
 
-Now if you want to serialize ``User`` objects as JSON documents you can't
-simply use ``json`` module, because it just doesn't know how to represent your
-object as JSON document. So you need to write a function which converts ``User``
+Now if you want to serialize ``User`` objects as JSON documents you can't simply
+use ``json`` module, because it just doesn't know how to represent your objects
+as JSON documents. So you need to write a function which converts ``User``
 objects to something which can be serialized, for example ``dict``. With time
 your app grows and complexity grows along so you need somehow to structure you
 serialization machinery, let's see how ``jsonpublish`` can help us there::
@@ -55,9 +54,9 @@ Now you can serialize your ``User`` objects::
 Parametrized adapters
 ---------------------
 
-Sometimes you want to alter serialization of some objects, let's write another
-adapter for ``User`` objects which can change it behaviour based on arguments
-given::
+Sometimes you want to alter serialization of some object, For example, let's
+write another adapter for ``User`` objects which can change it behaviour based
+on arguments given::
 
   @register_adapter(User)
   def adapt_user(user, include_birthday=True):
@@ -69,7 +68,7 @@ given::
     else:
       return {"username": user.username}
 
-Now the question is how to pass ``include_birthday`` keyword argument right to
+The question now is how to pass ``include_birthday`` keyword argument right to
 adapter::
 
   >>> from jsonpublish import jsonsettings
@@ -83,19 +82,19 @@ adapter::
   {"username": "andrey"}
 
 As you can see, by wrapping our ``User`` object in ``jsonsettings`` we can pass
-arbitrary keyword arguments to adapter so we can alter serialization schema with
-per-object granularity.
+arbitrary keyword arguments to corresponding adapter so we can alter
+serialization by per-object basis.
 
 Function ``jsonsettings`` actually doesn't alter object in any way, it just
 "annotates" it with some metadata needed for corresponding adapter. You can work
-with wrapped object in any way you like -- all methods and attributes are still
-there and even ``isinstance`` check works as before::
+with wrapped object as before -- all methods and attributes are still there and
+even ``isinstance`` check works the right way::
 
-  >>> user == user_m
+  >>> user_m == user
   True
   >>> user_m.username
   "andrey"
-  >>> isinstance(user, User)
+  >>> isinstance(user_m, User)
   True
 
 Reporting bugs and working on jsonpublish
