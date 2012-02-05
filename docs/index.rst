@@ -69,7 +69,6 @@ on arguments given::
     else:
       return {"username": user.username}
 
-Test `link <#jsonpublish.jsonsettings>`_.
 The question now is how to pass ``include_birthday`` keyword argument right to
 adapter, the answer is to use :func:`jsonpublish.jsonsettings`::
 
