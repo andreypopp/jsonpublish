@@ -17,6 +17,7 @@ _default_encoder = JSONEncoder(
     adapters=_global_adapters,
 )
 
+#: Register adapter for global encoder which is used by :func:`.dumps` function
 register_adapter = _global_adapters.register_adapter
 
 def dumps(obj, skipkeys=False, ensure_ascii=True, check_circular=True,
@@ -25,7 +26,10 @@ def dumps(obj, skipkeys=False, ensure_ascii=True, check_circular=True,
         namedtuple_as_object=True,
         tuple_as_array=True,
         **kw):
-    """ Serialize `obj` using globally configured JSON encoder"""
+    """ Serialize `obj` using globally configured JSON encoder
+
+    Accepted arguments are the same as :func:`json.dumps` accepts
+    """
     if (not skipkeys and ensure_ascii and
         check_circular and allow_nan
         and indent is None and separators is None and

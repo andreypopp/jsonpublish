@@ -27,6 +27,7 @@ class AdapterRegistry(object):
         self.cache = LRUCache(500)
 
     def lookup_adapter(self, typ):
+        """ Lookup adapter for ``typ``"""
         adapter = self.cache.get(typ, self._sentinel)
         if adapter is self._sentinel:
             adapter = self.underlying.lookup([typ], IJSONSerializeable, "")
@@ -34,9 +35,9 @@ class AdapterRegistry(object):
         return adapter
 
     def register_adapter(self, typ, adapter=None):
-        """ Register `adapter` for type `typ`
+        """ Register ``adapter`` for type ``typ``
 
-        If no `adapter` supplied then this method returns decorator.
+        If no ``adapter`` supplied then this method returns decorator.
         """
         if adapter is None:
             def decorator(adapter):
@@ -57,6 +58,10 @@ class JSONEncoder(json.JSONEncoder):
     It serializes object by consulting adapter registry. Registry can be
     modified by accessing `adapters` attribute of encoder which is of type
     `AdapterRegistry`.
+
+    :attr adapters:
+        instance of :class:`.AdapterRegistry` which is used for serialization
+        by encoder
     """
 
     def __init__(self, *args, **kwargs):
@@ -87,4 +92,5 @@ class JSONEncoderSettingsProxy(proxy.ProxyBase):
     def __init__(self, o, **settings):
         pass
 
+#: Create a proxy which carries JSON encoder settings
 jsonsettings = JSONEncoderSettingsProxy

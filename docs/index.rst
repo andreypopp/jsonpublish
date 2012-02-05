@@ -81,9 +81,9 @@ adapter::
   >>> print dumps(user_m)
   {"username": "andrey"}
 
-As you can see, by wrapping our ``User`` object in ``jsonsettings`` we can pass
-arbitrary keyword arguments to corresponding adapter so we can alter
-serialization by per-object basis.
+As you can see, by wrapping our ``User`` object in
+:func:`jsonpublish.jsonsettings` we can pass arbitrary keyword arguments to
+corresponding adapter so we can alter serialization by per-object basis.
 
 Function ``jsonsettings`` actually doesn't alter object in any way, it just
 "annotates" it with some metadata needed for corresponding adapter. You can work
@@ -109,3 +109,18 @@ In case submitting patch or GitHub pull request please ensure you have
 corresponding tests for your bugfix or new functionality.
 
 .. _Github: http://github.com/andreypopp/jsonpublish
+
+API reference
+-------------
+
+.. autofunction:: jsonpublish.dumps
+
+.. autofunction:: jsonpublish.register_adapter(typ, adapter=None)
+
+.. autofunction:: jsonpublish.jsonsettings(o, **settings)
+
+.. autoclass:: jsonpublish.JSONEncoder
+   :inherited-members:
+
+.. autoclass:: jsonpublish.AdapterRegistry
+   :members: register_adapter, lookup_adapter
