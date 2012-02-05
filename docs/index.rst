@@ -6,8 +6,8 @@
 jsonpublish -- configurable JSON encoder
 ========================================
 
-This package provides configurable JSON encoder based on simplejson package or
-json module from Python's standard library.
+This package provides configurable JSON encoder based on :mod:`simplejson` or
+:mod:`json` module from Python's standard library.
 
 When and why you should use jsonpublish:
 
@@ -30,11 +30,12 @@ may be, for example, Django models or just plain old Python's classes)::
       self.birthday = birthday
 
 Now if you want to serialize ``User`` objects as JSON documents you can't simply
-use ``json`` module, because it just doesn't know how to represent your objects
-as JSON documents. So you need to write a function which converts ``User``
-objects to something which can be serialized, for example ``dict``. With time
-your app grows and complexity grows along so you need somehow to structure you
-serialization machinery, let's see how ``jsonpublish`` can help us there::
+use :mod:`json` module, because it just doesn't know how to represent your
+objects as JSON documents. So you need to write a function which converts
+``User`` objects to something which can be serialized, for example ``dict``.
+With time your app grows and complexity grows along so you need somehow to
+structure you serialization machinery, let's see how :mod:`jsonpublish` can help
+us there::
 
   from jsonpublish import register_adapter
 
@@ -68,8 +69,9 @@ on arguments given::
     else:
       return {"username": user.username}
 
+Test `link <#jsonpublish.jsonsettings>`_.
 The question now is how to pass ``include_birthday`` keyword argument right to
-adapter::
+adapter, the answer is to use :func:`jsonpublish.jsonsettings`::
 
   >>> from jsonpublish import jsonsettings
   >>> user = User("andrey", 1987)
