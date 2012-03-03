@@ -14,6 +14,19 @@ __all__ = (
     "JSONEncoder", "JSONEncoderSettingsProxy", "jsonsettings",
     "AdapterRegistry")
 
+class IJSONSettings(Interface):
+    """ Marker interface"""
+
+class SettingsRegistry(object):
+
+    def __init__(self, settings):
+        self.underlying = adapter.AdapterRegistry()
+        for typ, s in settings.items():
+            self.underlying.register([implementedBy(typ)], IJSONSettings, "", s)
+
+    def lookup_settings(self, o):
+        return self.underlying.lookup([providedBy(o)], IJSONSettings, "")
+
 class IJSONSerializeable(Interface):
     """ Marker interface"""
 
@@ -51,7 +64,6 @@ class AdapterRegistry(object):
             [implementedBy(typ)], IJSONSerializeable, "", adapter)
         self.cache.clear()
 
-
 class JSONEncoder(json.JSONEncoder):
     """ Configurable JSON encoder
 
@@ -65,19 +77,26 @@ class JSONEncoder(json.JSONEncoder):
     """
 
     def __init__(self, *args, **kwargs):
-        if "adapters" in kwargs:
+        if kwargs.get("adapters"):
             self.adapters = kwargs.pop("adapters")
         else:
             self.adapters = AdapterRegistry()
+        if kwargs.get("settings"):
+            self.settings = SettingsRegistry(kwargs.pop("settings"))
+        else:
+            self.settings = None
         super(JSONEncoder, self).__init__(*args, **kwargs)
 
     def default(self, o, **settings):
+        s = (self.settings.lookup_settings(o) if self.settings else {}) or {}
+        s.update(settings)
         if proxy.isProxy(o, JSONEncoderSettingsProxy):
-            o, settings = proxy.getProxiedObject(o), o.__json_settings__
+            s.update(o.__json_settings__)
+            o = proxy.getProxiedObject(o)
         adapter = self.adapters.lookup_adapter(providedBy(o))
         if adapter is None:
             raise TypeError("%r is not JSON serializable" % o)
-        return adapter(o, **settings)
+        return adapter(o, **s)
 
 class JSONEncoderSettingsProxy(proxy.ProxyBase):
     """ Proxy which carries settings for adapters"""
@@ -93,4 +112,8 @@ class JSONEncoderSettingsProxy(proxy.ProxyBase):
         pass
 
 #: Create a proxy which carries JSON encoder settings
-jsonsettings = JSONEncoderSettingsProxy
+def jsonsettings(*o, **settings):
+    if o:
+        return JSONEncoderSettingsProxy(o[0], **settings)
+    else:
+        return settings

@@ -24,7 +24,7 @@ def dumps(obj, skipkeys=False, ensure_ascii=True, check_circular=True,
         allow_nan=True, indent=None, separators=None,
         encoding='utf-8', default=None, use_decimal=True,
         namedtuple_as_object=True,
-        tuple_as_array=True,
+        tuple_as_array=True, adapters=None, settings=None,
         **kw):
     """ Serialize `obj` using globally configured JSON encoder
 
@@ -34,7 +34,8 @@ def dumps(obj, skipkeys=False, ensure_ascii=True, check_circular=True,
         check_circular and allow_nan
         and indent is None and separators is None and
         encoding == 'utf-8' and default is None and use_decimal
-        and namedtuple_as_object and tuple_as_array and not kw):
+        and namedtuple_as_object and tuple_as_array and not kw
+        and not adapters and not settings):
         return _default_encoder.encode(obj)
     return JSONEncoder(
         skipkeys=skipkeys, ensure_ascii=ensure_ascii,
@@ -42,5 +43,5 @@ def dumps(obj, skipkeys=False, ensure_ascii=True, check_circular=True,
         separators=separators, encoding=encoding, default=default,
         use_decimal=use_decimal,
         namedtuple_as_object=namedtuple_as_object,
-        tuple_as_array=tuple_as_array, adapters=_global_adapters,
-        **kw).encode(obj)
+        tuple_as_array=tuple_as_array, adapters=adapters or _global_adapters,
+        settings=settings, **kw).encode(obj)
