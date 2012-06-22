@@ -1,5 +1,3 @@
-""" jsonpublish package"""
-
 from jsonpublish.encoder import JSONEncoder, AdapterRegistry, jsonsettings
 
 __all__ = ("dumps", "register_adapter", "jsonsettings")

@@ -114,6 +114,8 @@ corresponding tests for your bugfix or new functionality.
 API reference
 -------------
 
+.. automodule:: jsonpublish
+
 .. autofunction:: jsonpublish.dumps
 
 .. autofunction:: jsonpublish.register_adapter(typ, adapter=None)
