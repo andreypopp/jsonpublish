@@ -74,6 +74,9 @@ class JSONEncoder(json.JSONEncoder):
     def default(self, o, **settings):
         if proxy.isProxy(o, JSONEncoderSettingsProxy):
             o, settings = proxy.getProxiedObject(o), o.__json_settings__
+        if proxy.isProxy(o):
+            o = proxy.removeAllProxies(o)
+            return o
         adapter = self.adapters.lookup_adapter(providedBy(o))
         if adapter is None:
             raise TypeError("%r is not JSON serializable" % o)

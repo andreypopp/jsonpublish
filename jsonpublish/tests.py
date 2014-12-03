@@ -38,6 +38,27 @@ class TestJSONEncoder(unittest.TestCase):
             encoder.encode(jsonsettings(o, with_year=False)),
             '"05-08"')
 
+    def test_serialize_proxy(self):
+        from jsonpublish.encoder import JSONEncoder
+        encoder = JSONEncoder()
+        from zope.proxy import ProxyBase
+        p = ProxyBase(1)
+        self.assertEqual(encoder.encode(p), '1')
+
+    def test_serialize_on_adaptable(self):
+        from jsonpublish.encoder import JSONEncoder
+        encoder = JSONEncoder()
+        from zope.proxy import ProxyBase
+        from datetime import date
+        o = date(1987, 5, 8)
+        p = ProxyBase(o)
+        def adapt_date(d):
+            return d.strftime("%Y-%m-%d")
+        encoder.adapters.register_adapter(date, adapt_date)
+        self.assertEqual(
+            encoder.encode(p),
+            '"1987-05-08"')
+
 class TestGlobalJSONEncoder(unittest.TestCase):
 
     def test_adapt(self):
