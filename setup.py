@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 setup(
     name="jsonpublish",
-    version="0.2.0",
+    version="0.2.1",
     description="Publish Python object as JSON documents",
     long_description=open("README").read() + "\n\n" + open("CHANGES").read(),
     author="Andrey Popp",

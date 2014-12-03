@@ -1,6 +1,16 @@
 Changelog
 =========
 
+0.2.1
+-----
+
+* Fix encoding proxies.
+
+0.2.0
+-----
+
+* Update deps.
+
 0.1.2
 -----
 
